@@ -32,13 +32,16 @@ app.get("/api/hello", function (req, res) {
 
 const formatDate = (value) => {
   let res = {};
-  if (new Date(+value).getDay()) {
-    res.unix = +value;
-    res.utc = new Date(+value).toGMTString();
-  } else if (new Date(value).getDay()) {
-    res.unix = +new Date(value);
-    res.utc = new Date(Date.parse(value)).toGMTString();
-  } else if (!value) {
+  let val = value;
+
+  if (new Date(+val).getDay()) {
+    res.unix = +val;
+    res.utc = new Date(+val).toGMTString();
+  } else if (new Date(val).getDay()) {
+    val = `${val} GMT`;
+    res.unix = +new Date(val);
+    res.utc = new Date(val).toGMTString();
+  } else if (!val) {
     res.unix = Date.now();
     res.utc = new Date().toGMTString();
   } else {
